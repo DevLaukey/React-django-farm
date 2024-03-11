@@ -1,0 +1,10 @@
+.main {
+
+}
+
+.card{
+display: flex;
+margin-top: 20px;
+justify-content: space-evenly;
+padding:20px;
+}
