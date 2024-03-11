@@ -12,32 +12,13 @@ import MainWeatherWindow from "./MainWeather";
 const App = () => {
   const [weatherData, setWeatherData] = useState({
     city: undefined,
-    dailyDays: new Array(5).fill({}),
-    hourlyDays: new Array(8).fill({}),
+    dailyDays: [],
+    hourlyDays: [],
   });
 
   const [inputCity, setInputCity] = useState("London");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const getDayIndices = (dailyData) => {
-    const dayIndices = [];
-    const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-
-    for (let i = 0; i < dailyData.list.length; i++) {
-      const dtTimestamp = dailyData.list[i].dt * 1000;
-      const date = new Date(dtTimestamp);
-      date.setHours(0, 0, 0, 0);
-
-      if (date.getTime() === currentDate.getTime()) {
-        dayIndices.push(i);
-        currentDate.setDate(currentDate.getDate() + 1);
-      }
-    }
-
-    return dayIndices;
-  };
 
   const updateState = (dailyData, hourlyData) => {
     const city = dailyData.city.name;
@@ -53,22 +34,20 @@ const App = () => {
     };
 
     if (dailyData.list) {
-      const dailyDayIndices = getDayIndices(dailyData);
-      for (let i = 0; i < 5; i++) {
-        if (dailyData.list[dailyDayIndices[i]]?.weather) {
+      for (let i = 0; i < dailyData.list.length; i++) {
+        if (dailyData.list[i]?.weather) {
           dailyDays.push({
-            date: timestampToDateTime(dailyData.list[dailyDayIndices[i]].dt),
-            weather_desc:
-              dailyData.list[dailyDayIndices[i]].weather[0].description || "",
-            icon: dailyData.list[dailyDayIndices[i]].weather[0].icon || "",
-            temp: dailyData.list[dailyDayIndices[i]].main.temp || 0,
+            date: timestampToDateTime(dailyData.list[i].dt),
+            weather_desc: dailyData.list[i].weather[0].description || "",
+            icon: dailyData.list[i].weather[0].icon || "",
+            temp: dailyData.list[i].main.temp || 0,
           });
         }
       }
     }
 
     if (hourlyData.list) {
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < hourlyData.list.length; i++) {
         if (hourlyData.list[i].weather) {
           hourlyDays.push({
             date: timestampToDateTime(hourlyData.list[i].dt),
@@ -102,10 +81,7 @@ const App = () => {
       );
       const hourlyData = await hourlyResponse.json();
 
-      console.log( "datil",dailyData)
-
       if (dailyData.cod === "200" && hourlyData.cod === "200") {
-        console.log("hapa")
         setLoading(false);
         updateState(dailyData, hourlyData);
       } else {
@@ -132,11 +108,10 @@ const App = () => {
     }
   }, []);
 
-  console.log(weatherData)
   return (
     <Container maxWidth="md" style={{ marginTop: "20px" }}>
       <Paper elevation={3} style={{ padding: "20px", marginTop: "40px" }}>
-        {weatherData.city  &&
+        {weatherData.city !== undefined &&
         weatherData.dailyDays[0] !== undefined ? (
           <>
             <TextField
