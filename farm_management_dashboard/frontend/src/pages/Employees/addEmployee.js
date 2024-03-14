@@ -13,43 +13,55 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
+
 function AddEmployee() {
+  // Retrieve user key from local storage
   const { key } = JSON.parse(localStorage.getItem("user"));
 
+  // Hook for navigation
   const navigate = useNavigate();
 
+  // State for form data and error
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
 
+  // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
+    // Update form data with new values
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Check for empty fields
     const emptyFields = Object.keys(formData).filter((key) => !formData[key]);
 
+    // If there are empty fields, set error message
     if (emptyFields.length > 0) {
       setError(`Please fill in all fields: ${emptyFields.join(", ")}`);
       return;
     }
 
+    // Clear error message
     setError(null);
 
+    // Prepare data for API call
     const raw = {
       ...formData,
       user_token: key,
     };
 
+    // Set headers for API call
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
+    // Set options for API call
     const requestOptions = {
       method: "POST",
       headers: myHeaders,
@@ -57,14 +69,17 @@ function AddEmployee() {
       redirect: "follow",
     };
 
+    // Make API call to add new employee
     fetch("http://127.0.0.1:8000/api/employees/", requestOptions)
       .then((response) => response.json())
       .then((result) => {
+        // If successful, navigate to employees page
         result && navigate("/employees");
       })
-      .catch((error) => alert(error));
+      .catch((error) => alert(error)); // Show error if API call fails
   };
 
+  // Render form for adding new employee
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">

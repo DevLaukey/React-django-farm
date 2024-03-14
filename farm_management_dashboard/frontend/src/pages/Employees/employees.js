@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import TableRow from "@mui/material/TableRow";
 import { useNavigate } from "react-router-dom";
 
+// Define the columns for the table
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
   { id: "phone_number", label: "Phone Number", minWidth: 100 },
@@ -19,15 +20,18 @@ const columns = [
 ];
 
 export default function Employees() {
+  // Define states for page, rowsPerPage and employeeData
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [employeeData, setEmployeeData] = React.useState([]);
   const navigate = useNavigate();
 
+  // Fetch data when component mounts
   React.useEffect(() => {
     const fetchData = async () => {
       const userToken = JSON.parse(localStorage.getItem("user"))?.key;
 
+      // Fetch data only if userToken exists
       if (userToken) {
         try {
           const response = await fetch(
@@ -35,8 +39,10 @@ export default function Employees() {
           );
           const data = await response.json();
 
+          // Filter data by userToken
           const getUserDataByToken = data.filter((user) => user.user_token === userToken);
           
+          // Set employee data
           setEmployeeData(getUserDataByToken);
         } catch (error) {
           console.error("Error fetching employee data", error);
@@ -47,15 +53,18 @@ export default function Employees() {
     fetchData();
   }, []);
 
+  // Handle page change
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
+  // Handle rows per page change
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
+  // Render the component
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", marginTop: "5%" }}>
       <Button

@@ -12,6 +12,10 @@ import { Collapse, List } from "@mui/material";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
 
 
+/**
+ * Renders the main list items for the dashboard.
+ * @returns {JSX.Element} The main list items component.
+ */
 export const MainListItems = () => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
   const [color, setColor] = React.useState("");
@@ -19,13 +23,25 @@ export const MainListItems = () => {
   const [open, setOpen] = React.useState(false);
   const [openInventory, setOpenInventory] = React.useState(false);
 
+  /**
+   * Handles the click event for the main list item.
+   */
   const handleClick = () => {
     setOpen(!open);
   };
 
+  /**
+   * Handles the click event for the inventory list item.
+   */
   const handleInventoryClick = () => {
     setOpenInventory(!openInventory);
   };
+
+  /**
+   * Handles the click event for the list item.
+   * @param {Event} event - The click event.
+   * @param {number} index - The index of the selected item.
+   */
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
     setColor("#8c5000");
@@ -33,6 +49,7 @@ export const MainListItems = () => {
 
   return (
     <>
+      {/* Dashboard */}
       <ListItemButton
         component={Link}
         to="/"
@@ -45,6 +62,8 @@ export const MainListItems = () => {
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
       </ListItemButton>
+
+      {/* Weather */}
       <ListItemButton
         component={Link}
         to="/weather"
@@ -57,6 +76,8 @@ export const MainListItems = () => {
         </ListItemIcon>
         <ListItemText primary="Weather" />
       </ListItemButton>
+
+      {/* Employees */}
       <ListItemButton
         component={Link}
         to="/employees"
@@ -69,6 +90,8 @@ export const MainListItems = () => {
         </ListItemIcon>
         <ListItemText primary="Employees" />
       </ListItemButton>
+
+      {/* Financials */}
       <ListItemButton
         component={Link}
         to="/financials"
@@ -81,6 +104,8 @@ export const MainListItems = () => {
         </ListItemIcon>
         <ListItemText primary="Financials" />
       </ListItemButton>
+
+      {/* Crop Monitoring */}
       <ListItemButton
         component={Link}
         to="/add"
@@ -98,12 +123,15 @@ export const MainListItems = () => {
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List>
+          {/* Add Crop */}
           <ListItemButton component={Link} to="/add">
             <ListItemIcon>
               <Add />
             </ListItemIcon>
             <ListItemText primary="Add Crop" />
           </ListItemButton>
+
+          {/* View Crop */}
           <ListItemButton component={Link} to="/view">
             <ListItemIcon>
               <GrassIcon />
@@ -112,6 +140,8 @@ export const MainListItems = () => {
           </ListItemButton>
         </List>
       </Collapse>
+
+      {/* Inventory Tracking */}
       <ListItemButton
         selected={selectedIndex === 0}
         component={Link}
@@ -136,18 +166,23 @@ export const MainListItems = () => {
       </ListItemButton>
       <Collapse in={openInventory} timeout="auto" unmountOnExit>
         <List>
+          {/* Add Machine */}
           <ListItemButton component={Link} to="/addInventory">
             <ListItemIcon>
               <Add />
             </ListItemIcon>
             <ListItemText primary="Add Machine" />
           </ListItemButton>
+
+          {/* Add Livestock */}
           <ListItemButton component={Link} to="/addLivestock">
             <ListItemIcon>
               <Add />
             </ListItemIcon>
             <ListItemText primary="Add Livestock" />
           </ListItemButton>
+
+          {/* View Inventory */}
           <ListItemButton component={Link} to="/viewInventory">
             <ListItemIcon>
               <InventoryIcon />

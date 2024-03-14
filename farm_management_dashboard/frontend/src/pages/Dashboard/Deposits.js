@@ -6,6 +6,11 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Title from "./Title";
 
+/**
+ * Component for managing income deposits.
+ * Displays the total income, allows adding new income transactions,
+ * and shows a modal for adding income.
+ */
 export default function Deposits() {
   const [openModal, setOpenModal] = useState(false);
   const [incomeData, setIncomeData] = useState({
