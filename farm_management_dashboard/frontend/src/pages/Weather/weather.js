@@ -1,4 +1,3 @@
-// App.jsx
 import React, { useState, useEffect } from "react";
 import {
   Container,
@@ -9,22 +8,26 @@ import {
 } from "@mui/material";
 import MainWeatherWindow from "./MainWeather";
 
+// Main component for the weather application
 const App = () => {
+  // State variables for weather data, input city, loading status, and error message
   const [weatherData, setWeatherData] = useState({
     city: undefined,
     dailyDays: [],
     hourlyDays: [],
   });
-
   const [inputCity, setInputCity] = useState("London");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Function to update the state with new weather data
   const updateState = (dailyData, hourlyData) => {
+    // Extract city name and initialize arrays for daily and hourly data
     const city = dailyData.city.name;
     const dailyDays = [];
     const hourlyDays = [];
 
+    // Helper function to convert timestamp to date string
     const timestampToDateTime = (timestamp) => {
       const date = new Date(timestamp * 1000);
       return date.toLocaleString("en-US", {
@@ -33,6 +36,7 @@ const App = () => {
       });
     };
 
+    // Populate dailyDays array with data from dailyData.list
     if (dailyData.list) {
       for (let i = 0; i < dailyData.list.length; i++) {
         if (dailyData.list[i]?.weather) {
@@ -46,6 +50,7 @@ const App = () => {
       }
     }
 
+    // Populate hourlyDays array with data from hourlyData.list
     if (hourlyData.list) {
       for (let i = 0; i < hourlyData.list.length; i++) {
         if (hourlyData.list[i].weather) {
@@ -59,6 +64,7 @@ const App = () => {
       }
     }
 
+    // Update weatherData state with new data
     setWeatherData({
       city: city,
       dailyDays: dailyDays,
@@ -66,21 +72,25 @@ const App = () => {
     });
   };
 
+  // Function to make API calls to fetch weather data
   const makeApiCall = async () => {
     try {
       setLoading(true);
       setError(null);
 
+      // Fetch daily weather data
       const dailyResponse = await fetch(
         `https://api.openweathermap.org/data/2.5/forecast?q=${inputCity}&cnt=16&appid=6557810176c36fac5f0db536711a6c52`
       );
       const dailyData = await dailyResponse.json();
 
+      // Fetch hourly weather data
       const hourlyResponse = await fetch(
         `https://api.openweathermap.org/data/2.5/forecast?q=${inputCity}&cnt=8&appid=6557810176c36fac5f0db536711a6c52`
       );
       const hourlyData = await hourlyResponse.json();
 
+      // If both API calls are successful, update state with new data
       if (dailyData.cod === "200" && hourlyData.cod === "200") {
         setLoading(false);
         updateState(dailyData, hourlyData);
@@ -96,18 +106,21 @@ const App = () => {
     }
   };
 
+  // Function to handle key press events in the input field
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       makeApiCall();
     }
   };
 
+  // Effect to make initial API call when component mounts
   useEffect(() => {
     if (inputCity.trim() !== "") {
       makeApiCall();
     }
   }, []);
 
+  // Render the component
   return (
     <Container maxWidth="md" style={{ marginTop: "20px" }}>
       <Paper elevation={3} style={{ padding: "20px", marginTop: "40px" }}>

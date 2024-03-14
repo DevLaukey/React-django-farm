@@ -4,6 +4,7 @@ import { TextField, CircularProgress } from "@mui/material";
 const CityInput = (props) => {
   const [loading, setLoading] = useState(false);
 
+  // Function to handle the Enter key press
   const onKeyPressHandler = async (e) => {
     e.persist();
     const eventKey = e.which ? e.which : e.keyCode;
@@ -15,9 +16,11 @@ const CityInput = (props) => {
         e.target.classList.add("loading");
         setLoading(true);
 
+        // Make the API call and update the state
         if (await props.makeApiCall(city)) {
           e.target.placeholder = "Enter a City...";
         } else {
+          // If city was not found, display an error message
           e.target.placeholder = "City was not found, try again...";
         }
 

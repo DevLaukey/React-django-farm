@@ -3,6 +3,7 @@ import "./MainWeatherWindow.css";
 import WeatherBox from "./WeatherBox";
 
 const MainWeatherWindow = (props) => {
+  // Title component
   const Title = props.city ? null : <h1 className="title">Weather Forecast</h1>;
 
   console.log("MainWeatherWindow.jsx: props: ", props);

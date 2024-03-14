@@ -29,8 +29,10 @@ const ViewInventory = () => {
     setCurrentInventory(inventoryType);
   };
 
+  // Fetch inventory data
   const fetchData = async () => {
     try {
+      // Fetch data based on the current inventory
       const response =
         currentInventory === "machines"
           ? await fetch("http://127.0.0.1:8000/api/machinery/")
@@ -43,6 +45,7 @@ const ViewInventory = () => {
           [currentInventory]: data,
         }));
       } else {
+        // Handle error
        alert("Failed to fetch inventory data");
       }
     } catch (error) {
@@ -50,17 +53,21 @@ const ViewInventory = () => {
     }
   };
 
+  // Fetch data on initial render
   useEffect(() => {
     fetchData();
   }, [currentInventory]);
 
+  // Update item
   const handleUpdate = (item) => {
     setSelectedItem(item);
     setOpenDialog(true);
   };
 
+  // Delete item
   const handleDelete = async (itemId) => {
     try {
+      // Delete item based on the current inventory
       const response =
         currentInventory === "machines"
           ? await fetch(`http://127.0.0.1:8000/api/machinery/${itemId}/`, {
@@ -86,6 +93,7 @@ const ViewInventory = () => {
         setInventoryData(updatedInventory);
         alert("Item deleted successfully");
       } else {
+        // Handle error
         alert("Failed to delete item");
       }
     } catch (error) {
@@ -93,8 +101,10 @@ const ViewInventory = () => {
     }
   };
 
+  // Update item 
   const handleSaveUpdate = async () => {
     try {
+      // Update item based on the current inventory
       const response =
         currentInventory === "machines"
           ? await fetch(
@@ -131,11 +141,13 @@ const ViewInventory = () => {
     }
   };
 
+  // Close dialog
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setSelectedItem(null);
   };
 
+  // Handle input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSelectedItem((prevItem) => ({ ...prevItem, [name]: value }));

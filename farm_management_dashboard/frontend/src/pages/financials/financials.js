@@ -12,21 +12,27 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
+// Create a default theme
 const defaultTheme = createTheme();
 
 const Financials = () => {
-    const { key } = JSON.parse(localStorage.getItem("user"));
+  // Retrieve user key from local storage
+  const { key } = JSON.parse(localStorage.getItem("user"));
 
-    const navigate = useNavigate();
+  // Initialize navigation hook
+  const navigate = useNavigate();
 
+  // Initialize form data state
   const [formData, setFormData] = useState({
     amount: "",
     description: "",
     date: "",
   });
-    const [error, setError] = useState(null);
 
+  // Initialize error state
+  const [error, setError] = useState(null);
 
+  // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -35,27 +41,32 @@ const Financials = () => {
     }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
-       e.preventDefault();
+    e.preventDefault();
 
-       // Check for empty fields
-       const emptyFields = Object.keys(formData).filter(
-         (key) => !formData[key]
-       );
+    // Check for empty fields
+    const emptyFields = Object.keys(formData).filter(
+      (key) => !formData[key]
+    );
 
-       if (emptyFields.length > 0) {
-         setError(`Please fill in all fields: ${emptyFields.join(", ")}`);
-         return;
-       }
+    // If there are empty fields, set error state and return
+    if (emptyFields.length > 0) {
+      setError(`Please fill in all fields: ${emptyFields.join(", ")}`);
+      return;
+    }
 
-       setError(null);
+    // Reset error state
+    setError(null);
 
-       const raw = {
-         ...formData,
-         user_token: key,
-       };
+    // Prepare data for submission
+    const raw = {
+      ...formData,
+      user_token: key,
+    };
 
     try {
+      // Make POST request to API
       const response = await fetch("http://127.0.0.1:8000/api/expenditure/", {
         method: "POST",
         headers: {
@@ -78,6 +89,7 @@ const Financials = () => {
     }
   };
 
+  // Render form
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">

@@ -12,14 +12,14 @@ import {
 import { ThemeProvider } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 
-
 const defaultTheme = createTheme();
 
 function Inventory() {
   const { key } = JSON.parse(localStorage.getItem("user"));
-    const navigate = useNavigate();
+  // Use the navigate hook from react-router-dom to programmatically navigate
+  const navigate = useNavigate();
 
-
+  // Initialize form values state
   const [formValues, setFormValues] = useState({
     plate_number: "",
     equipment_name: "",
@@ -27,38 +27,48 @@ function Inventory() {
     purchase_date: "",
   });
 
+  // Handle form input changes
   const handleChange = (event) => {
     const { name, value } = event.target;
+    // Update the form values state
     setFormValues((prevValues) => ({
       ...prevValues,
       [name]: value,
     }));
   };
 
-
+  // Initialize error state
   const [error, setError] = useState(null);
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Check for empty fields
-    const emptyFields = Object.keys(formValues).filter((key) => !formValues[key]);
+    const emptyFields = Object.keys(formValues).filter(
+      (key) => !formValues[key]
+    );
 
+    // If there are empty fields, set error state and return
     if (emptyFields.length > 0) {
       setError(`Please fill in all fields: ${emptyFields.join(", ")}`);
       return;
     }
 
+    // Reset error state
     setError(null);
 
+    // Prepare the data to be sent
     const raw = {
       ...formValues,
       user_token: key,
     };
 
+    // Prepare the headers for the request
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
+    // Prepare the request options
     const requestOptions = {
       method: "POST",
       headers: myHeaders,
@@ -66,16 +76,21 @@ function Inventory() {
       redirect: "follow",
     };
 
+    // Log the data to be sent
     console.log(raw);
+
+    // Send the request
     fetch("http://127.0.0.1:8000/api/machinery/", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
+        // If the request was successful, navigate to the inventory view
         result && navigate("/viewInventory");
       })
-      .catch((error) => alert(error));
+      .catch((error) => alert(error)); // Handle any errors
   };
 
+  // Render the component
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -101,7 +116,7 @@ function Inventory() {
               <Typography color="error" variant="subtitle2">
                 {error}
               </Typography>
-            )}  
+            )}
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -167,5 +182,5 @@ function Inventory() {
     </ThemeProvider>
   );
 }
-
+// Export the component
 export default Inventory;

@@ -6,7 +6,7 @@ import { Typography } from "@mui/material";
 const Chart = ({ data }) => {
   const theme = useTheme();
 
-  // Assuming data is an array of objects with 'time' and 'amount' properties
+  // Convert fetched data to the format expected by LineChart
   const chartData = data.map((entry) => ({
     time: entry.time,
     amount: parseFloat(entry.amount),

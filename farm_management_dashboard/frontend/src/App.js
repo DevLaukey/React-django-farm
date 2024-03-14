@@ -20,16 +20,20 @@ import Weather from "./pages/Weather/weather";
 const isAuthenticated = () => {
   // Check if the user is logged in. You can modify this check based on your authentication logic.
   const user = JSON.parse(localStorage.getItem("user"));
+
   return user !== null && user !== undefined;
 };
 
+// A wrapper for <Route> that redirects to the login
 const PrivateRoute = ({ element, ...rest }) => {
   return isAuthenticated() ? element : <Navigate to="/login" />;
 };
 
+// A wrapper for <Route> that redirects to the dashboard
 const AuthRoute = ({ element, ...rest }) => {
   return !isAuthenticated() ? element : <Navigate to="/" />;
 };
+
 
 const DashboardLayout = ({ children }) => (
   <ThemeProvider theme={theme}>
