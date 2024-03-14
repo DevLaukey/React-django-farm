@@ -1,14 +1,16 @@
-import {  Divider, IconButton, List, Toolbar, Typography } from '@mui/material'
-import MuiAppBar from '@mui/material/AppBar'
-import MuiDrawer from '@mui/material/Drawer'
-import MenuIcon from '@mui/icons-material/Menu';
+import { Divider, IconButton, List, Toolbar, Typography } from "@mui/material";
+import MuiAppBar from "@mui/material/AppBar";
+import MuiDrawer from "@mui/material/Drawer";
+import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import React from 'react';
-import styled from '@emotion/styled';
-import { MainListItems } from '../pages/Dashboard/ListItems';
-import { Logout } from '@mui/icons-material';
+import React from "react";
+import styled from "@emotion/styled";
+import { MainListItems } from "../pages/Dashboard/ListItems";
+import { Logout } from "@mui/icons-material";
 
 const drawerWidth = 240;
+
+// Styling for the AppBar and Drawer. It uses material UI components
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -55,6 +57,8 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
+
+// Get the time of the day to determine the greeting
 function getGreeting() {
   const currentTime = new Date().getHours();
   let greeting = "";
@@ -68,18 +72,24 @@ function getGreeting() {
   return greeting;
 }
 
+
+// Logout the user
 const logout = () => {
   localStorage.clear();
-  window.location.href = '/';
- }
+  window.location.href = "/";
+};
+
 
 function TopBar() {
-      const [open, setOpen] = React.useState(true);
-      const toggleDrawer = () => {
-        setOpen(!open);
-      };
-  
-  const username = localStorage.getItem('username');
+  // state for the drawer
+  const [open, setOpen] = React.useState(true);
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
+
+
+  // get the stored username to display after authentication
+  const username = localStorage.getItem("username");
 
   return (
     <>
@@ -146,4 +156,4 @@ function TopBar() {
   );
 }
 
-export default TopBar
+export default TopBar;

@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 
+# This is the view for the app. It contains the following classes:
 class CropViewSet(viewsets.ModelViewSet):
     queryset = Crop.objects.all()
     serializer_class = CropSerializer

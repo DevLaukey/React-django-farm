@@ -2,6 +2,9 @@ from django.db import models
 from datetime import date
 from django.contrib.auth.models import User
 
+# This is the database model for the app. It contains the following classes:
+
+
 class Crop(models.Model):
     name = models.CharField(max_length=255)
     variety = models.CharField(max_length=255)

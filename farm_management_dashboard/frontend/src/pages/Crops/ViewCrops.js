@@ -60,59 +60,66 @@ const ViewCrops = () => {
     setSelectedCrop(null);
   };
 
- const handleSaveUpdate = async () => {
-   try {
-     const response = await fetch(
-       `http://127.0.0.1:8000/api/crops/${selectedCrop.id}/`,
-       {
-         method: "PUT",
-         headers: {
-           "Content-Type": "application/json",
-         },
-         body: JSON.stringify(selectedCrop),
-       }
-     );
+  const handleSaveUpdate = async () => {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/crops/${selectedCrop.id}/`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(selectedCrop),
+        }
+      );
 
-     console.log(response);
-     if (response.ok) {
-       // Update the local state with the updated crop
-       const updatedCrops = crops.map((crop) =>
-         crop.id === selectedCrop.id ? selectedCrop : crop
-       );
-       setCrops(updatedCrops);
-       alert("Crop updated successfully");
-     } else {
-       alert("Failed to update crop");
-     }
-   } catch (error) {
-     console.error("Error updating crop:", error);
-   }
+      console.log(response);
+      if (response.ok) {
+        // Update the local state with the updated crop
+        const updatedCrops = crops.map((crop) =>
+          crop.id === selectedCrop.id ? selectedCrop : crop
+        );
+        setCrops(updatedCrops);
+        alert("Crop updated successfully");
+      } else {
+        alert("Failed to update crop");
+      }
+    } catch (error) {
+      console.error("Error updating crop:", error);
+    }
 
-   // Close the dialog
-   handleCloseDialog();
- };
+    // Close the dialog
+    handleCloseDialog();
+  };
 
- const handleDelete = async (id) => {
-   try {
-     const response = await fetch(`http://127.0.0.1:8000/api/crops/${id}/`, {
-       method: "DELETE",
-       headers: {
-         "Content-Type": "application/json",
-       },
-     });
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/crops/${id}/`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-     if (response.ok) {
-       // Remove the deleted crop from the local state
-       const updatedCrops = crops.filter((crop) => crop.id !== id);
-       setCrops(updatedCrops);
-       console.log("Crop deleted successfully");
-     } else {
-       console.error("Failed to delete crop");
-     }
-   } catch (error) {
-     console.error("Error deleting crop:", error);
-   }
- };
+      // Check if the response is successful
+      if (response.ok) {
+        // Filter out the deleted crop from the local state
+        const updatedCrops = crops.filter((crop) => crop.id !== id);
+        // Update the local state with the remaining crops
+        setCrops(updatedCrops);
+        // Log a success message
+        console.log("Crop deleted successfully");
+      } else {
+        // Log an error message if the deletion was not successful
+        console.error("Failed to delete crop");
+      }
+    } catch (error) {
+      // Log any error that occurs during the deletion process
+      console.error("Error deleting crop:", error);
+    }
+  };
+
+  // Render the component
   return (
     <Box
       sx={{
@@ -125,6 +132,7 @@ const ViewCrops = () => {
         spacing={{ xs: 2, md: 3 }}
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
+        {/* Map through the crops and render a card for each */}
         {crops.map((crop) => (
           <Grid item xs={2} sm={4} md={4} key={crop.id}>
             <Card
@@ -137,8 +145,10 @@ const ViewCrops = () => {
                     : "1px solid #ccc",
               }}
             >
+              {/* Display the crop name as the card header */}
               <CardHeader title={crop.name} />
               <CardContent>
+                {/* Display the crop details */}
                 <Typography variant="body2" color="text.secondary">
                   Variety: {crop.variety}
                 </Typography>
@@ -148,6 +158,7 @@ const ViewCrops = () => {
                 <Typography variant="body2" color="text.secondary">
                   Harvesting Date: {crop.harvest_date}
                 </Typography>
+                {/* Render the update and delete buttons */}
                 <Button
                   onClick={() => handleUpdate(crop)}
                   variant="contained"
@@ -170,11 +181,12 @@ const ViewCrops = () => {
         ))}
       </Grid>
 
-      {/* Update Dialog */}
+      {/* Render the update dialog */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Update Crop</DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
+            {/* Render the form fields for updating the crop */}
             <Grid item xs={12}>
               <TextField
                 style={{ marginTop: 10 }}
@@ -218,6 +230,7 @@ const ViewCrops = () => {
             </Grid>
           </Grid>
         </DialogContent>
+        {/* Render the dialog actions */}
         <DialogActions>
           <Button onClick={handleCloseDialog} color="primary">
             Cancel
@@ -231,4 +244,5 @@ const ViewCrops = () => {
   );
 };
 
+// Export the ViewCrops component
 export default ViewCrops;

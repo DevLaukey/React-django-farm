@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 from .views import CropViewSet, EmployeeViewSet, LivestockViewSet, MachineryViewSet, UserRegistrationView, IncomeViewSet, ExpenditureViewSet, IncomeCreateView, ExpenditureCreateView
 
+# This is the URL configuration for the app. It contains the following URL patterns:
 router = routers.DefaultRouter()
 router.register(r'crops', CropViewSet)
 router.register(r'employees', EmployeeViewSet)

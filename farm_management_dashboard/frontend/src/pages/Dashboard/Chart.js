@@ -4,6 +4,10 @@ import { LineChart, axisClasses } from "@mui/x-charts";
 
 import Title from "./Title";
 
+/**
+ * Renders a chart component displaying expenditure data.
+ * @returns {JSX.Element} The chart component.
+ */
 const Chart = () => {
   const theme = useTheme();
   const [expenditureData, setExpenditureData] = useState([]);

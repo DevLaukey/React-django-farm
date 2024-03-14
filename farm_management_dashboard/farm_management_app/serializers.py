@@ -2,6 +2,8 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Crop, Employee, Livestock, Machinery, Income, Expenditure
 
+
+# This is the serializer for the app. It contains the following classes:
 class CropSerializer(serializers.ModelSerializer):
     class Meta:
         model = Crop
