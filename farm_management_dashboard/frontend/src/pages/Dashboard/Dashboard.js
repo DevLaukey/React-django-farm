@@ -28,7 +28,7 @@ export default function Dashboard() {
             overflow: "auto",
           }}
         >
-          <Toolbar /> // Toolbar component
+          <Toolbar /> 
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Typography variant="h4" component="h3" gutterBottom>
               Financial Overview
@@ -44,7 +44,7 @@ export default function Dashboard() {
                     height: 240,
                   }}
                 >
-                  <Chart /> // Chart component
+                  <Chart /> 
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
@@ -57,13 +57,13 @@ export default function Dashboard() {
                     height: 240,
                   }}
                 >
-                  <Deposits /> // Deposits component
+                  <Deposits /> 
                 </Paper>
               </Grid>
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  <Orders /> // Orders component
+                  <Orders /> 
                 </Paper>
               </Grid>
             </Grid>

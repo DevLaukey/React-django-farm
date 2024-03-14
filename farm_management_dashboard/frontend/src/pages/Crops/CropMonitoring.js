@@ -1,7 +1,20 @@
-/**
- * Component for monitoring and adding crops.
- * @returns {JSX.Element} CropMonitoring component.
- */
+import React, { useState } from "react";
+import {
+  TextField,
+  Button,
+  createTheme,
+  Container,
+  CssBaseline,
+  Box,
+  Grid,
+  Typography,
+} from "@mui/material";
+import { ThemeProvider } from "@emotion/react";
+import { useNavigate } from "react-router-dom";
+
+const defaultTheme = createTheme();
+
+
 function CropMonitoring() {
   // Retrieve user key from local storage
   const { key } = JSON.parse(localStorage.getItem("user"));
